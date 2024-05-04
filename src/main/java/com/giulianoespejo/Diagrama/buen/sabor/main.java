@@ -1,5 +1,6 @@
 package com.giulianoespejo.Diagrama.buen.sabor;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 @SpringBootApplication
 public class main {
@@ -18,6 +20,8 @@ public class main {
 	public static void main(String[] args) {
 		SpringApplication.run(main.class, args);
 	}
+
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(main.class);
 
 	@Bean
 	public CommandLineRunner schedulingRunner() {
@@ -31,6 +35,7 @@ public class main {
 						InetAddress inetAddress = InetAddress.getByName(host);
 						boolean reachable = inetAddress.isReachable(5000); // Timeout de 5 segundos
 						if (reachable) {
+							logger.error("Ping a {}", host);
 							System.out.println("Ping a " + host + " exitoso.");
 						} else {
 							System.out.println("No se pudo hacer ping a " + host + ".");
