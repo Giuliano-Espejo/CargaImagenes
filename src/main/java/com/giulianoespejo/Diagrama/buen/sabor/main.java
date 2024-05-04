@@ -26,14 +26,14 @@ public class main {
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
-					String url = "https://example.com"; // Cambia esto por la URL que desees hacer ping
+					String host = "cargaimagenes.onrender.com"; // Solo el nombre del host, sin el protocolo
 					try {
-						InetAddress inetAddress = InetAddress.getByName(url);
+						InetAddress inetAddress = InetAddress.getByName(host);
 						boolean reachable = inetAddress.isReachable(5000); // Timeout de 5 segundos
 						if (reachable) {
-							System.out.println("Ping a " + url + " exitoso.");
+							System.out.println("Ping a " + host + " exitoso.");
 						} else {
-							System.out.println("No se pudo hacer ping a " + url + ".");
+							System.out.println("No se pudo hacer ping a " + host + ".");
 						}
 					} catch (UnknownHostException e) {
 						System.out.println("Host desconocido: " + e.getMessage());

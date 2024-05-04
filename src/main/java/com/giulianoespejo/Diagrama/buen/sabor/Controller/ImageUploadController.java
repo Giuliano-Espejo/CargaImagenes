@@ -1,6 +1,7 @@
 package com.giulianoespejo.Diagrama.buen.sabor.Controller;
 
 import com.giulianoespejo.Diagrama.buen.sabor.Service.ImagenService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,18 @@ public class ImageUploadController {
 
     @Autowired
     private ImagenService imagenService;
+
+    // Método para crear el directorio de carga si no existe
+    @PostConstruct
+    public void init() {
+        try {
+            Path path = Paths.get(uploadDir);
+            Files.createDirectories(path);
+            System.out.println("Directorio de carga creado en: " + path);
+        } catch (IOException e) {
+            System.err.println("Error al crear el directorio de carga: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/upload")
     @ResponseBody
@@ -82,5 +95,4 @@ public class ImageUploadController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
 }
