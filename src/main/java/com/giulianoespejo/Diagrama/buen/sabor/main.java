@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 
 import java.io.IOException;
@@ -23,6 +25,7 @@ public class main {
 
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(main.class);
 
+
 	@Bean
 	public CommandLineRunner schedulingRunner() {
 		return args -> {
@@ -30,19 +33,13 @@ public class main {
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
-					String host = "buensaborback.onrender.com"; // Solo el nombre del host, sin el protocolo
-					try {
-						InetAddress inetAddress = InetAddress.getByName(host);
-						boolean reachable = inetAddress.isReachable(5000); // Timeout de 5 segundos
-						if (reachable) {
-							logger.info("Ping a {}", host);
-						} else {
-							logger.info("Ping a fallido{}", host);
-						}
-					} catch (UnknownHostException e) {
-						System.out.println("Host desconocido: " + e.getMessage());
-					} catch (IOException e) {
-						System.out.println("Error de IO: " + e.getMessage());
+					String url = "https://buensaborback.onrender.com/empresa";
+					RestTemplate restTemplate = new RestTemplate();
+					ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+					if (response.getStatusCode().is2xxSuccessful()) {
+						logger.info("GET a {} exitoso", url);
+					} else {
+						logger.info("GET a {} fallido", url);
 					}
 				}
 			};
@@ -51,5 +48,4 @@ public class main {
 			timer.schedule(task, 0, 150 * 1000);
 		};
 	}
-
 }
