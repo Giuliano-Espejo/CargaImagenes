@@ -30,15 +30,14 @@ public class main {
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
-					String host = "cargaimagenes.onrender.com"; // Solo el nombre del host, sin el protocolo
+					String host = "buensaborback.onrender.com"; // Solo el nombre del host, sin el protocolo
 					try {
 						InetAddress inetAddress = InetAddress.getByName(host);
 						boolean reachable = inetAddress.isReachable(5000); // Timeout de 5 segundos
 						if (reachable) {
-							logger.error("Ping a {}", host);
-							System.out.println("Ping a " + host + " exitoso.");
+							logger.info("Ping a {}", host);
 						} else {
-							System.out.println("No se pudo hacer ping a " + host + ".");
+							logger.info("Ping a fallido{}", host);
 						}
 					} catch (UnknownHostException e) {
 						System.out.println("Host desconocido: " + e.getMessage());
@@ -49,7 +48,7 @@ public class main {
 			};
 
 			// Programa la tarea para ejecutarse cada 2 horas (7200 segundos)
-			timer.schedule(task, 0, 7200 * 1000);
+			timer.schedule(task, 0, 150 * 1000);
 		};
 	}
 
