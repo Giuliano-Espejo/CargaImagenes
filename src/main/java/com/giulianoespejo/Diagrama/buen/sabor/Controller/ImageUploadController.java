@@ -1,5 +1,6 @@
 package com.giulianoespejo.Diagrama.buen.sabor.Controller;
 
+import com.giulianoespejo.Diagrama.buen.sabor.Repository.PaisRepository;
 import com.giulianoespejo.Diagrama.buen.sabor.Service.ImagenService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.Resource;
@@ -93,6 +94,18 @@ public class ImageUploadController {
         } catch (IOException e) {
             // Si ocurre un error al leer el archivo, devuelve una respuesta de error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @Autowired
+    PaisRepository paisRepository;
+
+    @GetMapping("/pais")
+    public ResponseEntity<?> verImagen() {
+        try {
+            return ResponseEntity.ok(paisRepository.findAll());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

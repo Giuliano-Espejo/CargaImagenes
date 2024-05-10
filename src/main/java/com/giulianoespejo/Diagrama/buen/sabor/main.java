@@ -1,6 +1,9 @@
 package com.giulianoespejo.Diagrama.buen.sabor;
 
+import com.giulianoespejo.Diagrama.buen.sabor.Entity.Pais;
+import com.giulianoespejo.Diagrama.buen.sabor.Repository.PaisRepository;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,6 +28,8 @@ public class main {
 
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(main.class);
 
+	@Autowired
+	PaisRepository paisRepository;
 
 	@Bean
 	public CommandLineRunner schedulingRunner() {
@@ -33,6 +38,13 @@ public class main {
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
+					var pais = paisRepository.findById(1L);
+					if(pais.isEmpty()){
+						Pais pais1 = Pais.builder()
+								.nombre("sad")
+								.build();
+						paisRepository.save(pais1);
+					}
 					String url = "https://buensaborback.onrender.com/empresa";
 					RestTemplate restTemplate = new RestTemplate();
 					ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
