@@ -46,8 +46,15 @@ public class main {
 						paisRepository.save(pais1);
 					}
 					String url = "https://buensaborback.onrender.com/empresa";
+					String url2 = "https://autohost.onrender.com";
 					RestTemplate restTemplate = new RestTemplate();
 					ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+					if (response.getStatusCode().is2xxSuccessful()) {
+						logger.info("GET a {} exitoso", url);
+					} else {
+						logger.info("GET a {} fallido", url);
+					}
+					response = restTemplate.getForEntity(url2, String.class);
 					if (response.getStatusCode().is2xxSuccessful()) {
 						logger.info("GET a {} exitoso", url);
 					} else {
